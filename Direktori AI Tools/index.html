@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <!-- Viewport: Responsif & Nonaktifkan Zoom -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Presentasi Modern - Direktori AI Tools (Tema Tech)</title>
+    
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Memuat Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /*
+         * TEMA MODERN TECH (Variasi)
+         * Menggantikan gaya "Boss Juragan" dengan palet biru/indigo yang bersih,
+         * glassmorphism, dan kontrol UI yang lebih modern.
+        */
+        :root {
+            /* Palet Warna Utama (Biru/Indigo) */
+            --color-primary-light: #6366F1; /* Indigo 500 */
+            --color-primary-dark: #4338CA;  /* Indigo 700 */
+            --color-accent-gradient: linear-gradient(90deg, var(--color-primary-light), var(--color-primary-dark));
+            
+            /* Warna Teks & Latar Belakang (Light Mode - Default) */
+            --color-bg: #F8F9FC; /* Abu-abu sangat muda kebiruan */
+            --color-bg-alt: #FFFFFF;
+            --color-bg-section-even: #F1F3F9;
+            --color-text: #1F2937; /* Abu-abu gelap */
+            --color-text-alt: #6B7280; /* Abu-abu medium */
+            --color-border: rgba(0,0,0,0.08);
+            --shadow-opacity: 0.05; 
+            --shadow-opacity-strong: 0.1;
+        }
+
+        /* Dark Mode */
+        body.dark {
+            --color-bg: #0D1117; /* GitHub Dark */
+            --color-bg-alt: #161B22;
+            --color-bg-section-even: #0A0C10;
+            --color-text: #E6EDF3; /* Teks terang */
+            --color-text-alt: #909DAB; /* Teks medium */
+            --color-border: rgba(255,255,255,0.12);
+            --shadow-opacity: 0.1; 
+            --shadow-opacity-strong: 0.2;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+        
+        /* Utilitas (Toggle Switch dari file asli, sedikit disesuaikan) */
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .toggle-slider { background-color: var(--color-primary-light); }
+        input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+        /* Animasi */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up { 
+            animation: fadeInUp 0.6s ease-out forwards; 
+            opacity: 0; /* Mulai transparan */
+        }
+        .animate-delay-1 { animation-delay: 0.1s; }
+        .animate-delay-2 { animation-delay: 0.2s; }
+        .animate-delay-3 { animation-delay: 0.3s; }
+
+        /* Hero Section (Lebih Bersih & Modern) */
+        .hero {
+            background-color: var(--color-bg-alt);
+            padding: 60px 0 60px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--color-border);
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0, var(--shadow-opacity));
+        }
+        .hero-content { position: relative; z-index: 2; text-align: center; }
+        .hero-logo {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 800; margin-bottom: 15px;
+            background: var(--color-accent-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: -1px;
+        }
+        .hero-tagline {
+            font-size: clamp(1rem, 3vw, 1.25rem); margin-bottom: 30px;
+            color: var(--color-text-alt); max-width: 650px; margin-left: auto; margin-right: auto;
+        }
+        .hero-button {
+            background-color: var(--color-primary-dark); color: white; padding: 14px 32px; border-radius: 12px;
+            font-size: 1rem; font-weight: 600; display: inline-block;
+            box-shadow: 0 5px 20px rgba(67, 56, 202, 0.25);
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .hero-button:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(67, 56, 202, 0.35);
+        }
+        body.dark .hero-button {
+            background-color: var(--color-primary-light);
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.25);
+        }
+         body.dark .hero-button:hover {
+             box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
+         }
+
+        /* Navigation (Glassmorphism) */
+        .nav {
+            background: color-mix(in srgb, var(--color-bg) 85%, transparent);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0, var(--shadow-opacity));
+            border-bottom: 1px solid var(--color-border);
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+        .nav-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .nav-logo-icon { color: var(--color-primary-dark); }
+        .nav-logo-text { font-size: 1.3rem; font-weight: 700; color: var(--color-primary-dark); }
+        body.dark .nav-logo-icon { color: var(--color-primary-light); }
+        body.dark .nav-logo-text { color: var(--color-primary-light); }
+        .nav-theme-toggle { display: flex; align-items: center; gap: 10px; }
+        .nav-theme-label { font-size: 0.9rem; font-weight: 500; color: var(--color-text-alt); }
+
+        /* Section Styling */
+        .section { padding: 60px 0; position: relative; }
+        .section:nth-child(even) { background: var(--color-bg-section-even); }
+        .section-title {
+            font-size: clamp(1.8rem, 5vw, 2.5rem); text-align: center; margin-bottom: 12px;
+            color: var(--color-text); font-weight: 800;
+        }
+        .section-subtitle {
+            text-align: center; font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--color-text-alt);
+            margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto;
+        }
+
+        /* Filter & Sort Styling (Lebih Intuitif) */
+        .filter-sort-container {
+             display: flex; flex-wrap: wrap;
+             align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem;
+        }
+        
+        /* Segmented Control (Modern & Responsif) */
+        .segmented-control-wrapper {
+            flex-grow: 1;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* Scroll mulus di iOS */
+            padding-bottom: 8px; /* Ruang untuk shadow */
+            scrollbar-width: none; /* Firefox */
+        }
+        .segmented-control-wrapper::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+        
+        .segmented-control {
+            display: inline-flex; /* Agar bisa discroll jika melebihi lebar */
+            background: var(--color-bg-section-even);
+            border-radius: 12px;
+            padding: 5px;
+            gap: 5px;
+            border: 1px solid var(--color-border);
+        }
+        .segmented-control button[role="tab"] {
+            flex: 0 0 auto; /* Tidak stretch, ukuran sesuai konten */
+            white-space: nowrap; /* Teks tidak terlipat */
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-alt);
+        }
+        .segmented-control button[role="tab"].active {
+            background: var(--color-bg-alt);
+            color: var(--color-primary-dark);
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        body.dark .segmented-control button[role="tab"].active {
+             color: var(--color-primary-light);
+             background: var(--color-bg-alt);
+        }
+
+        /* Dropdown (Lebih Bersih) */
+        .sort-select { 
+             flex-shrink: 0;
+             padding: 12px 16px; border-radius: 12px; border: 1px solid var(--color-border); 
+             background-color: var(--color-bg-alt); font-weight: 500;
+             appearance: none; -webkit-appearance: none;
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236B7280' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+             background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em;
+             cursor: pointer;
+             min-width: 180px;
+        }
+        body.dark .sort-select {
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23909DAB' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+        }
+
+        /* Card Styling (Lebih Elegan & Interaktif) */
+        .bookmark-card {
+            background: var(--color-bg-alt); border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0, var(--shadow-opacity));
+            transition: all 0.3s ease; 
+            border: 1px solid var(--color-border); 
+            display: flex; flex-direction: column; height: 100%;
+            padding: 24px;
+        }
+        .bookmark-card:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 8px 20px rgba(0,0,0, var(--shadow-opacity-strong));
+             border-color: var(--color-primary-light);
+        }
+        .card-header {
+             display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;
+        }
+        .card-icon { width: 40px; height: 40px; border-radius: 10px; object-fit: contain; flex-shrink: 0; }
+        .card-title-section { min-width: 0; flex: 1; }
+        .card-title { font-size: 1.1rem; font-weight: 600; color: var(--color-text); margin-bottom: 2px; line-height: 1.3; }
+        .card-domain { font-size: 0.8rem; color: var(--color-text-alt); font-weight: 400; display: block; line-height: 1.3; }
+        .card-content { flex-grow: 1; margin-bottom: 1rem; }
+        .card-description { font-size: 0.9rem; color: var(--color-text-alt); line-height: 1.6; }
+        .card-footer { margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--color-border); }
+        .card-category-badge {
+            display: inline-block; font-size: 0.75rem; font-weight: 500;
+            padding: 4px 10px; border-radius: 9999px;
+            background-color: color-mix(in srgb, var(--color-primary-light) 10%, transparent); 
+            color: var(--color-primary-dark);
+            border: 1px solid color-mix(in srgb, var(--color-primary-light) 30%, transparent);
+        }
+         body.dark .card-category-badge {
+             background-color: color-mix(in srgb, var(--color-primary-light) 20%, transparent);
+             color: var(--color-primary-light);
+             border-color: color-mix(in srgb, var(--color-primary-light) 40%, transparent);
+         }
+
+        /* Accordion Styling (Lebih Bersih) */
+        .accordion-container { max-width: 800px; margin: 0 auto; border-radius: 16px; border: 1px solid var(--color-border); box-shadow: 0 4px 12px rgba(0,0,0, var(--shadow-opacity)); overflow: hidden; background-color: var(--color-bg-alt); }
+        .accordion-item { border-bottom: 1px solid var(--color-border); }
+        .accordion-item:last-child { border-bottom: none; }
+        .accordion-toggle { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 1.25rem 1.5rem; text-align: left; background-color: transparent; border: none; cursor: pointer; transition: background-color 0.2s ease; }
+        .accordion-toggle:hover { background-color: color-mix(in srgb, var(--color-primary-light) 5%, transparent); }
+        .accordion-title { font-size: 1.1rem; font-weight: 600; color: var(--color-text); }
+        .accordion-icon { transition: transform 0.3s ease; color: var(--color-text-alt); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .accordion-content-inner { padding: 0 1.5rem 1.5rem 1.5rem; font-size: 0.95rem; color: var(--color-text-alt); line-height: 1.7; }
+        .accordion-content-inner ul { list-style: disc; list-style-position: inside; padding-left: 0.5rem; space-y: 0.5rem; }
+
+        /* Glosarium Styling */
+        .glossary-container { max-width: 900px; margin: 0 auto; border-radius: 16px; border: 1px solid var(--color-border); box-shadow: 0 4px 12px rgba(0,0,0, var(--shadow-opacity)); overflow: hidden; background-color: var(--color-bg-alt); }
+        .glossary-table-wrapper { overflow-x: auto; }
+        .glossary-table { width: 100%; min-width: 600px; border-collapse: collapse; }
+        .glossary-table th, .glossary-table td { padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        .glossary-table thead th { background-color: var(--color-bg-section-even); font-size: 0.8rem; font-weight: 600; color: var(--color-text-alt); text-transform: uppercase; letter-spacing: 0.05em; }
+        .glossary-table tbody tr:last-child td { border-bottom: none; }
+        .glossary-table tbody tr:hover { background-color: var(--color-bg-section-even); }
+        .glossary-table .term { font-weight: 600; color: var(--color-text); font-size: 0.9rem; }
+        .glossary-table .definition { color: var(--color-text-alt); font-size: 0.9rem; line-height: 1.6; }
+
+         /* Footer Styling */
+        .footer { 
+             margin-top: 4rem; 
+             border-top: 1px solid var(--color-border); 
+             padding: 2.5rem 0; 
+             background-color: var(--color-bg-section-even);
+        }
+        .footer-content { color: var(--color-text-alt); text-align: center; }
+        .footer-link { 
+             color: var(--color-primary-dark); font-weight: 500; text-decoration: underline; 
+             transition: color 0.2s ease; 
+        }
+         body.dark .footer-link { color: var(--color-primary-light); }
+         .footer-link:hover { opacity: 0.8; }
+         
+         /* Tooltip Sederhana (dari file asli) */
+         .tooltip { position: relative; display: inline-block; cursor: help; }
+         .tooltip::after {
+            content: attr(data-tooltip); position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%);
+            background-color: #333; color: #fff; padding: 6px 10px; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 400; line-height: 1.4; white-space: nowrap;
+            opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 10;
+         }
+         .tooltip:hover::after { opacity: 1; visibility: visible; }
+         body.dark .tooltip::after { background-color: #eee; color: #333; }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+           .filter-sort-container { flex-direction: column; align-items: stretch; gap: 1.5rem; }
+           .sort-select { min-width: 100%; } /* Lebar penuh di mobile */
+           .hero { padding: 40px 0 40px; border-radius: 0 0 20px 20px;}
+           .section { padding: 40px 0; }
+           .accordion-toggle { padding: 1rem 1.25rem; }
+           .accordion-title { font-size: 1rem; }
+           .glossary-table th, .glossary-table td { padding: 0.75rem 1rem; }
+        }
+    </style>
+</head>
+<body class=""> <!-- Default Light Mode -->
+
+    <!-- Header / Navbar -->
+    <header class="nav">
+        <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="nav-container">
+                <a href="#" class="nav-logo">
+                    <!-- Ikon modern (Sparkles) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-logo-icon w-7 h-7"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
+                    <span class="nav-logo-text">AI Tools</span>
+                </a>
+                <div class="nav-theme-toggle">
+                    <span class="nav-theme-label hidden sm:inline">Mode</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+        
+        <!-- Hero Section -->
+        <section id="hero" class="hero mb-16 md:mb-24">
+            <div class="hero-content fade-in-up">
+                <h2 class="hero-logo">Direktori AI Tools</h2>
+                <p class="hero-tagline">
+                    Jelajahi koleksi *bookmark* alat kecerdasan buatan pilihan. Akses cepat ke platform inovatif untuk berbagai kebutuhan.
+                </p>
+                 <!-- Tombol scroll smooth -->
+                <button onclick="document.getElementById('bookmark-section').scrollIntoView({ behavior: 'smooth' });" class="hero-button fade-in-up animate-delay-1">
+                    Lihat Koleksi
+                    <!-- Ikon panah ke bawah -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="inline-block ml-2 relative top-[-1px]"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Fungsionalitas & Konten Utama -->
+        <section class="section pt-0" id="bookmark-section">
+            <h2 class="section-title fade-in-up">Koleksi Tools</h2>
+             <p class="section-subtitle fade-in-up animate-delay-1">
+                Filter berdasarkan kategori atau urutkan sesuai preferensi Anda.
+            </p>
+
+            <!-- Navigasi Filter & Sortir -->
+            <div class="filter-sort-container fade-in-up animate-delay-2">
+                
+                <!-- Segmented Control Kategori (Struktur HTML Baru) -->
+                <div class="segmented-control-wrapper">
+                    <div id="category-filter" class="segmented-control" role="tablist">
+                        <button role="tab" data-value="all" class="active">Semua</button>
+                        <button role="tab" data-value="Chatbot">Chatbot</button>
+                        <button role="tab" data-value="Gambar & Video">Gambar & Video</button>
+                        <button role="tab" data-value="Tulisan & Produktivitas">Tulisan</button>
+                        <button role="tab" data-value="Developer">Developer</button>
+                        <button role="tab" data-value="Lainnya">Lainnya</button>
+                    </div>
+                </div>
+
+                <!-- Dropdown Urutkan -->
+                <div class="sort-select-wrapper">
+                    <label for="sort-select" class="sr-only">Urutkan</label>
+                    <select id="sort-select" class="sort-select">
+                        <option value="default">Urutan Default</option>
+                        <option value="asc">Nama A-Z</option>
+                        <option value="desc">Nama Z-A</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Grid Kartu Bookmark -->
+            <div id="bookmark-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"> 
+                <!-- Placeholder Loading -->
+                <div class="text-center p-10 col-span-full" id="loading-placeholder">
+                    <p class="text-xl font-medium mb-4" style="color: var(--color-text-alt);">Memuat koleksi AI tools...</p>
+                    <svg class="animate-spin h-8 w-8 mx-auto" style="color: var(--color-primary-light);" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accordion (Tentang Proyek) -->
+        <section class="section fade-in-up animate-delay-3">
+             <h2 class="section-title">Tentang Aplikasi Ini</h2>
+             <p class="section-subtitle">
+                 Informasi mengenai tujuan dan fitur interaktif yang tersedia.
+             </p>
+            <div class="accordion-container">
+                <!-- Item 1 -->
+                <div class="accordion-item">
+                    <button class="accordion-toggle" aria-expanded="false">
+                        <span class="accordion-title">Tujuan Aplikasi</span>
+                        <svg class="accordion-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            Aplikasi ini mendemonstrasikan bagaimana daftar *bookmark* dapat diubah menjadi platform presentasi digital yang interaktif dan profesional. Tujuannya adalah menyajikan koleksi AI Tools secara visual menarik, mudah dinavigasi, dan memberikan pengalaman pengguna yang imersif. Visualisasi ini menggunakan tema "Modern Tech" yang bersih dan elegan.
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="accordion-item">
+                    <button class="accordion-toggle" aria-expanded="false">
+                        <span class="accordion-title">Fitur Interaktif</span>
+                        <svg class="accordion-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                         <div class="accordion-content-inner">
+                             <ul>
+                                <li><strong>Mode Terang & Gelap:</strong> Ubah tema via *Toggle Switch* di header.</li>
+                                <li><strong>Filter Kategori Dinamis:</strong> Pilih kategori menggunakan *Segmented Control* yang modern dan *scrollable* di mobile.</li>
+                                <li><strong>Kartu Interaktif:</strong> Setiap kartu memiliki efek *hover* yang halus dan informatif.</li>
+                                <li><strong>Pengurutan Fleksibel:</strong> Urutkan *tools* berdasarkan nama (A-Z, Z-A) via *Dropdown*.</li>
+                                 <li><strong>Navigasi Halus:</strong> Tombol di *hero section* membawa Anda ke daftar *tools*.</li>
+                                 <li><strong>Tooltip Informatif:</strong> Arahkan kursor ke ikon 💡 untuk info tambahan.</li>
+                                 <li><strong>Accordion Ringkas:</strong> Buka/tutup bagian informasi ini.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Glosarium Interaktif -->
+        <section class="section fade-in-up animate-delay-3">
+             <h2 class="section-title">
+                 Glosarium Istilah AI
+                <span class="tooltip" data-tooltip="Definisi singkat untuk istilah-istilah umum dalam dunia AI yang relevan dengan tools ini.">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 inline-block -mt-1 ml-1 cursor-help" style="color: var(--color-primary-light);"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </span>
+             </h2>
+             <p class="section-subtitle">
+                 Pahami terminologi kunci yang sering muncul dalam konteks alat AI.
+            </p>
+            <div class="glossary-container">
+                <div class="glossary-table-wrapper">
+                    <table class="glossary-table" id="glossary-table">
+                        <thead>
+                            <tr>
+                                <th>Istilah</th>
+                                <th>Penjelasan Singkat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Di-render oleh JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 footer-content">
+            <p class="text-sm">
+                ©2025 visualisasi oleh Kashafa-MentorPLUS
+            </p>
+            <p class="text-sm mt-2">
+                Temukan layanan lainnya di 
+                <a href="https://kashafa-mentorplus.my.id/" target="_blank" rel="noopener noreferrer" class="footer-link">
+                   https://kashafa-mentorplus.my.id/
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script type="module">
+        // Data Bookmark (SAMA SEPERTI FILE ASLI)
+        // const bookmarks = [...] // Data ini duplikat, dihapus.
+
+        // Data Glosarium (SAMA SEPERTI FILE ASLI)
+        // const glossary = [...] // Data ini duplikat, dihapus.
+
+        // --- State Aplikasi ---
+        let currentFilter = 'all';
+        let currentSort = 'default';
+        // Menyalin data lengkap untuk rendering (file asli hanya menyalin sebagian, ini lebih baik)
+        const bookmarks = [
+             // Kategori: Chatbot
+            { href: "https://chat.deepseek.com/", title: "DeepSeek", description: "Chatbot AI dengan fokus pada kemampuan coding dan penalaran.", category: "Chatbot" },
+            { href: "https://grok.com/", title: "Grok AI", description: "Chatbot AI dari xAI dengan akses informasi real-time dan sentuhan humor.", category: "Chatbot" },
+            { href: "https://chat.qwen.ai/", title: "Qwen AI (Tongyi Qianwen)", description: "Model bahasa besar dari Alibaba Cloud, mendukung multimodalitas.", category: "Chatbot" },
+            { href: "https://www.bing.com/search?q=Bing+AI&showconv=1&FORM=hpcodx", title: "Microsoft Copilot (Bing Chat)", description: "Asisten AI percakapan dari Microsoft, terintegrasi dengan pencarian Bing.", category: "Chatbot" },
+            { href: "https://gemini.google.com/app", title: "Google Gemini", description: "Model AI multimodal tercanggih dari Google, penerus Bard.", category: "Chatbot" },
+            { href: "https://chat.openai.com/", title: "ChatGPT", description: "Chatbot AI populer dari OpenAI, dikenal luas karena kemampuan bahasanya.", category: "Chatbot" },
+            { href: "https://poe.com/", title: "Poe", description: "Platform agregator chatbot AI, memungkinkan akses ke berbagai model.", category: "Chatbot" },
+            { href: "https://you.com/", title: "You.com", description: "Mesin pencari berbasis AI yang menawarkan ringkasan dan jawaban percakapan.", category: "Chatbot" },
+            { href: "https://claude.ai/chats", title: "Claude AI", description: "Chatbot AI dari Anthropic, fokus pada keamanan dan percakapan yang membantu.", category: "Chatbot" },
+             { href: "https://character.ai/?open_mobile=true", title: "Character.AI", description: "Platform untuk membuat dan berinteraksi dengan chatbot AI berbasis karakter fiksi atau nyata.", category: "Chatbot" },
+            { href: "https://myninja.ai/", title: "Ninja AI", description: "Asisten AI SuperGPT yang bertujuan meningkatkan produktivitas.", category: "Chatbot" },
+            { href: "https://jugemu.app/chat/f7be1788-b0a2-4fe2-baf7-94b16809a0c5", title: "Jugemu Chat 1", description: "Platform AI generatif yang bertujuan mendemokratisasi akses AI.", category: "Chatbot" },
+            { href: "https://jugemu.app/chat/96b23311-95b4-4b12-8146-2e7bc8f5af49", title: "Jugemu Chat 2", description: "Platform AI generatif yang bertujuan mendemokratisasi akses AI.", category: "Chatbot" },
+             { href: "https://chat.cekat.ai/dashboard", title: "Cekat AI", description: "Platform chatbot AI yang mungkin berfokus pada pasar atau fitur lokal.", category: "Chatbot" },
+             { href: "https://tutorai.me/", title: "Tutor AI", description: "Tutor AI personal untuk membantu mempelajari berbagai topik.", category: "Chatbot" },
+
+
+            // Kategori: Gambar & Video
+            { href: "https://app.artflow.ai/character-builder?feature=actors", title: "Artflow.ai Character Builder", description: "Buat avatar dan karakter unik menggunakan AI.", category: "Gambar & Video" },
+            { href: "https://pixverse.ai/", title: "PixVerse", description: "Platform AI untuk membuat video menakjubkan dari teks atau gambar.", category: "Gambar & Video" },
+            { href: "https://videozen.ai/home", title: "VideoZen.ai", description: "Buat video menarik menggunakan AI untuk meningkatkan engagement pengguna.", category: "Gambar & Video" },
+            { href: "https://wave.video/videos", title: "Wave.video", description: "Platform pembuatan dan pengeditan video online serbaguna.", category: "Gambar & Video" },
+            { href: "https://studio.invideo.io/dashboard", title: "InVideo Studio", description: "Editor video online untuk membuat video profesional dengan cepat.", category: "Gambar & Video" },
+            { href: "https://app.kidsvideozai.com/dashboard", title: "KidsVideoz AI", description: "Platform AI khusus untuk pembuatan konten video anak-anak.", category: "Gambar & Video" },
+            { href: "https://www.canva.com/", title: "Canva", description: "Platform desain grafis populer dengan banyak fitur AI terintegrasi.", category: "Gambar & Video" },
+            { href: "https://www.flexclip.com/", title: "FlexClip", description: "Editor video online gratis untuk membuat video pendek, slideshow, dll.", category: "Gambar & Video" },
+            { href: "https://app.spline.design/generate", title: "Spline AI Generate", description: "Hasilkan objek dan tekstur 3D menggunakan AI di dalam Spline.", category: "Gambar & Video" },
+            { href: "https://lumalabs.ai/dream-machine", title: "Luma Dream Machine", description: "Model AI dari Luma Labs untuk menghasilkan video berkualitas tinggi dari teks.", category: "Gambar & Video" },
+            { href: "https://app.leonardo.ai/", title: "Leonardo.Ai", description: "Platform AI untuk menghasilkan aset game, seni konsep, dan gambar berkualitas produksi.", category: "Gambar & Video" },
+            { href: "https://tensor.art/", title: "Tensor.Art", description: "Generator gambar AI online gratis dan platform hosting model.", category: "Gambar & Video" },
+            { href: "https://www.freepik.com/ai/image-generator", title: "Freepik AI Image Generator", description: "Hasilkan gambar unik dari teks menggunakan AI, terintegrasi dengan Freepik.", category: "Gambar & Video" },
+            { href: "https://vst.collov.ai/", title: "Collov AI Visualizer", description: "Alat visualisasi desain interior menggunakan AI.", category: "Gambar & Video" },
+            { href: "https://app.pebblely.com/", title: "Pebblely", description: "AI untuk membuat foto produk yang indah dalam hitungan detik.", category: "Gambar & Video" },
+            { href: "https://klingai.com/", title: "KLING AI", description: "Studio kreatif AI generasi berikutnya untuk pembuatan video.", category: "Gambar & Video" },
+            { href: "https://app.morphstudio.com/library", title: "Morph Studio", description: "Platform AI untuk transformasi dan pembuatan video.", category: "Gambar & Video" },
+            { href: "https://www.shakker.ai/", title: "Shakker AI", description: "Hub model Stable Diffusion premium untuk generasi gambar.", category: "Gambar & Video" },
+            { href: "https://huggingface.co/spaces/black-forest-labs/FLUX.1-schnell", title: "FLUX.1 Schnell", description: "Model generasi gambar AI baru yang cepat dari Black Forest Labs.", category: "Gambar & Video" },
+            { href: "https://haiper.ai/", title: "Haiper AI Video Generator", description: "Platform untuk membuat dan mengedit video menggunakan AI.", category: "Gambar & Video" },
+            { href: "https://lovevoice.ai/", title: "Lovevoice AI", description: "Generator suara AI dan alat text-to-speech online.", category: "Gambar & Video" },
+            { href: "https://civitai.com/", title: "Civitai", description: "Platform utama untuk berbagi dan menemukan model AI generatif open-source.", category: "Gambar & Video" },
+            { href: "https://ratu.ai/", title: "Ratu AI", description: "Generator AI teks dan gambar yang mungkin berfokus pada bahasa Indonesia.", category: "Gambar & Video" },
+            { href: "https://colab.research.google.com/github/lllyasviel/Fooocus/blob/main/fooocus_colab.ipynb", title: "Fooocus Colab", description: "Notebook Google Colab untuk menjalankan Fooocus, antarmuka Stable Diffusion.", category: "Gambar & Video" },
+            { href: "https://fooocus.one/playground", title: "Fooocus Playground", description: "Coba Fooocus secara online untuk bereksperimen dengan gaya gambar AI.", category: "Gambar & Video" },
+            { href: "https://diffusionart.co/", title: "DiffusionArt.co", description: "Generator seni AI gratis dengan akses ke banyak model Stable Diffusion.", category: "Gambar & Video" },
+            { href: "https://huggingface.co/spaces/TencentARC/PhotoMaker", title: "PhotoMaker", description: "AI dari Tencent untuk menyesuaikan gambar potret (misal: mengganti wajah).", category: "Gambar & Video" },
+            { href: "https://rendernet.ai/", title: "RenderNet AI", description: "AI untuk membuat gambar & video berbasis karakter dengan kontrol tinggi.", category: "Gambar & Video" },
+             { href: "https://tengr.ai/en", title: "Tengr.ai", description: "Buat dan edit gambar menggunakan berbagai alat AI.", category: "Gambar & Video" },
+            { href: "https://www.dzine.ai/", title: "Dzine.ai (Stylar)", description: "Alat desain & gambar AI dengan fokus pada kontrol pengguna.", category: "Gambar & Video" },
+             { href: "https://mnml.ai/", title: "mnml.ai", description: "Render arsitektur (sketch, interior, eksterior) menggunakan AI.", category: "Gambar & Video" },
+             { href: "https://piclumen.com/app/image-generator/explore", title: "PicLumen", description: "Platform generasi gambar AI dengan fokus eksplorasi.", category: "Gambar & Video" },
+             { href: "https://www.hiclipart.com/", title: "HiClipart", description: "Sumber daya untuk gambar clipart PNG dengan latar belakang transparan.", category: "Gambar & Video" },
+             { href: "https://app.artflow.ai/my-creations", title: "Artflow.ai My Creations", description: "Halaman kreasi pengguna di Artflow.ai.", category: "Gambar & Video" },
+             { href: "https://scribeaiapp.com/user/ai-ecover", title: "ScribeAI eCover", description: "Fitur dari ScribeAI untuk membuat sampul buku/produk (eCover).", category: "Gambar & Video" },
+             { href: "https://app.ltx.studio/", title: "LTX Studio", description: "Platform AI untuk mengubah ide menjadi produksi video.", category: "Gambar & Video" },
+             { href: "https://app.pictory.ai/home", title: "Pictory.AI", description: "Teknologi AI untuk membuat video dari teks atau artikel panjang.", category: "Gambar & Video" },
+             { href: "https://www.lightxeditor.com/user-dashboard/", title: "LightX AI Doodle Generator", description: "Editor foto online dengan fitur AI, termasuk generator doodle.", category: "Gambar & Video" },
+             { href: "https://snapedit.app/", title: "SnapEdit", description: "Editor foto AI online gratis untuk menghapus objek, meningkatkan kualitas, dll.", category: "Gambar & Video" },
+             { href: "https://creator.nightcafe.studio/", title: "NightCafe Creator", description: "Generator seni AI populer dengan berbagai model dan gaya.", category: "Gambar & Video" },
+             { href: "https://firefly.adobe.com/", title: "Adobe Firefly", description: "Keluarga model AI generatif dari Adobe untuk gambar, vektor, dan efek teks.", category: "Gambar & Video" },
+             { href: "https://www.aiease.ai/", title: "AI Ease", description: "Editor foto AI online gratis untuk otomatisasi pengeditan.", category: "Gambar & Video" },
+             { href: "https://transitionalhooks.com/", title: "Transitional Hooks", description: "Alat atau sumber daya untuk ide 'hook' transisi video media sosial.", category: "Gambar & Video" },
+             { href: "https://socialmediahooks.com/", title: "Social Media Hooks", description: "Kumpulan 'hook' viral untuk video media sosial.", category: "Gambar & Video" },
+
+            // Kategori: Tulisan & Produktivitas
+            { href: "https://www.aiforwork.co/", title: "AI for Work", description: "Kumpulan prompt ChatGPT lanjutan untuk berbagai profesi.", category: "Tulisan & Produktivitas" },
+            { href: "https://member.asistenai.com/", title: "Asisten AI", description: "Aplikasi asisten virtual AI, mungkin untuk pasar Indonesia.", category: "Tulisan & Produktivitas" },
+            { href: "https://koala.sh/", title: "Koala Writer/Chat", description: "Penulis dan chatbot AI yang dirancang untuk membuat konten SEO berkualitas.", category: "Tulisan & Produktivitas" },
+            { href: "https://app.copy.ai/", title: "Copy.ai", description: "Platform copywriting AI untuk marketing, sales, dan konten bisnis.", category: "Tulisan & Produktivitas" },
+            { href: "https://neuralwriter.com/id/prompt-tool/", title: "NeuralWriter Prompt Tool", description: "Alat bantu pembuatan prompt untuk menghasilkan teks yang lebih baik.", category: "Tulisan & Produktivitas" },
+            { href: "https://aikonten.com/app/user/templates", title: "Aikonten Templates", description: "Platform konten AI dengan berbagai template siap pakai.", category: "Tulisan & Produktivitas" },
+            { href: "https://gamma.app/", title: "Gamma", description: "Alat AI untuk membuat presentasi, dokumen, dan halaman web yang menarik.", category: "Tulisan & Produktivitas" },
+            { href: "https://www.storydoc.com/", title: "Storydoc", description: "Platform untuk membuat presentasi dan proposal penjualan interaktif.", category: "Tulisan & Produktivitas" },
+            { href: "https://www.sincode.ai/", title: "SinCode AI", description: "Platform AI serbaguna untuk copywriting, generasi konten, dan lainnya.", category: "Tulisan & Produktivitas" },
+            { href: "https://app.predis.ai/app/dashboard", title: "Predis.ai", description: "AI untuk pembuatan konten media sosial, termasuk penjadwalan.", category: "Tulisan & Produktivitas" },
+            { href: "https://smallppt.com/", title: "Smallppt", description: "Buat presentasi AI dan peta pikiran dengan cepat.", category: "Tulisan & Produktivitas" },
+            { href: "https://flowgpt.com/", title: "FlowGPT", description: "Komunitas untuk berbagi dan menemukan prompt ChatGPT terbaik.", category: "Tulisan & Produktivitas" },
+            { href: "https://jenni.ai/", title: "Jenni AI", description: "Asisten penulisan AI yang membantu dalam riset dan penulisan akademik.", category: "Tulisan & Produktivitas" },
+            { href: "https://scribeaiapp.com/user/dashboard", title: "ScribeAI Dashboard", description: "Platform AI untuk membuat dokumentasi proses dan panduan.", category: "Tulisan & Produktivitas" },
+            { href: "https://app.asana.com/0/1207406189524966/board", title: "Asana", description: "Platform manajemen kerja populer, mungkin memiliki fitur AI.", category: "Tulisan & Produktivitas" },
+            { href: "https://app.copy.ai/projects/25586684?tool=chat&tab=results", title: "Copy.ai Project Chat", description: "Fitur chat dalam proyek Copy.ai untuk kolaborasi atau refine konten.", category: "Tulisan & Produktivitas" },
+             { href: "https://learningstudioai.com/", title: "LearningStudioAI", description: "Alat penulisan kursus online yang didukung AI.", category: "Tulisan & Produktivitas" },
+             { href: "https://www.mymarky.ai/", title: "Marky AI", description: "Platform pemasaran media sosial AI yang kuat.", category: "Tulisan & Produktivitas" },
+             { href: "https://narrato.io/", title: "Narrato", description: "Perangkat lunak AI untuk pembuatan konten, pemasaran, dan alur kerja.", category: "Tulisan & Produktivitas" },
+             { href: "https://app.anakin.ai/discover", title: "Anakin.ai", description: "Platform AI No-Code untuk membangun aplikasi dan alur kerja otomatis.", category: "Tulisan & Produktivitas" },
+             { href: "https://app.longshot.ai/login", title: "LongShot AI", description: "Asisten penulisan AI untuk menghasilkan konten blog yang autentik dan SEO-friendly.", category: "Tulisan & Produktivitas" },
+             { href: "https://seowriting.ai/", title: "SEO Writing AI", description: "Alat penulisan AI khusus untuk membuat artikel SEO dalam satu klik.", category: "Tulisan & Produktivitas" },
+             { href: "https://dashboard.braintext.ai/user/dashboard", title: "BrainText.ai", description: "Platform penulisan konten AI serbaguna.", category: "Tulisan & Produktivitas" },
+             { href: "https://www.promptpal.net/", title: "PromptPal", description: "Direktori untuk menemukan prompt AI terbaik untuk berbagai kebutuhan.", category: "Tulisan & Produktivitas" },
+             { href: "https://tost.ai/", title: "Tost AI", description: "Alat AI untuk meringkas konten video dan audio.", category: "Tulisan & Produktivitas" },
+            { href: "https://www.aidocmaker.com/", title: "AI Doc Maker", description: "Platform AI untuk membuat berbagai jenis dokumen secara otomatis.", category: "Tulisan & Produktivitas" },
+             { href: "https://www.deepl.com/en/translator", title: "DeepL Translator", description: "Penerjemah AI yang dikenal dengan akurasi tinggi untuk berbagai bahasa.", category: "Tulisan & Produktivitas" },
+            { href: "https://notegpt.io/", title: "NoteGPT", description: "AI untuk meringkas video YouTube, artikel web, dan PDF.", category: "Tulisan & Produktivitas" },
+            { href: "https://writeless.ai/", title: "Writeless", description: "Penulis esai AI yang menyertakan kutipan (citations).", category: "Tulisan & Produktivitas" },
+             { href: "https://wonderslide.com/create/", title: "Wonderslide", description: "AI untuk membuat slide presentasi profesional secara otomatis.", category: "Tulisan & Produktivitas" },
+             { href: "https://app.presentations.ai/#/", title: "Presentations.AI", description: "Platform AI untuk mendesain dan membuat presentasi.", category: "Tulisan & Produktivitas" },
+
+
+            // Kategori: Developer/Misc
+            { href: "https://aistudio.google.com/prompts/new_chat", title: "Google AI Studio", description: "Platform Google untuk bereksperimen dengan model AI generatif.", category: "Developer" },
+            { href: "https://ai.google.dev/", title: "Google AI for Developers", description: "Sumber daya Google untuk developer AI, termasuk API Gemini & Gemma.", category: "Developer" },
+            { href: "https://sdk.vercel.ai/", title: "Vercel AI SDK Playground", description: "Bandingkan model AI teratas secara berdampingan.", category: "Developer" },
+            { href: "https://userpersona.dev/", title: "User Persona Dev", description: "Hasilkan persona pengguna berbasis AI dalam hitungan detik.", category: "Developer" },
+             { href: "https://founderpal.ai/user-persona-generator", title: "FounderPal Persona Generator", description: "Generator persona pengguna gratis untuk solopreneur.", category: "Developer" },
+            { href: "https://ai.boardofinnovation.com/personas-maker", title: "Personas Maker AI", description: "Alat AI dari Board of Innovation untuk membuat persona pengguna.", category: "Developer" },
+             { href: "https://www.semrush.com/persona/", title: "Semrush Persona Tool", description: "Template dan builder persona pembeli gratis dari Semrush.", category: "Developer" },
+
+
+            // Kategori: Lainnya
+            { href: "https://lookerstudio.google.com/navigation/reporting", title: "Looker Studio", description: "Platform visualisasi data dan BI gratis dari Google.", category: "Lainnya" },
+            { href: "https://belajar-skill.id/", title: "Belajar Skill", description: "Platform belajar online untuk berbagai keterampilan.", category: "Lainnya" },
+            { href: "https://www.pdftoquiz.com/dashboard", title: "PDF To Quiz", description: "Ubah file PDF menjadi kuis interaktif secara otomatis.", category: "Lainnya" },
+            { href: "https://quizizz.com/admin", title: "Quizizz", description: "Platform kuis interaktif untuk pendidikan dan pelatihan.", category: "Lainnya" },
+            { href: "https://tinywow.com/", title: "TinyWow", description: "Kumpulan alat online gratis untuk PDF, gambar, video, dan AI writing.", category: "Lainnya" },
+            { href: "https://roadmap.sh/ai", title: "Roadmap.sh AI Path", description: "Peta jalan belajar (roadmap) untuk menjadi developer AI/ML.", category: "Lainnya" },
+            { href: "https://vidiq.com/", title: "vidIQ", description: "Alat ekstensi browser untuk analisis dan pertumbuhan channel YouTube.", category: "Lainnya" },
+            { href: "https://ads.google.com/intl/en_id/home/campaigns/demand-gen/", title: "Google Ads Demand Gen", description: "Kampanye Google Ads untuk menjangkau audiens di platform visual.", category: "Lainnya" },
+             { href: "https://my.findmykids.org/", title: "Findmykids", description: "Aplikasi pelacak GPS untuk keamanan anak.", category: "Lainnya" },
+             { href: "https://myaidrive.com/", title: "My AI Drive", description: "Penyimpanan cloud yang mungkin terintegrasi dengan fitur AI.", category: "Lainnya" },
+             { href: "https://smallpdf.com/#r=app", title: "Smallpdf", description: "Alat online serbaguna untuk mengelola dan mengedit PDF.", category: "Lainnya" },
+             { href: "https://gtmetrix.com/reports/kashafa-mentorplus.com/6NVQ201i/", title: "GTmetrix Report", description: "Alat analisis kecepatan dan performa website.", category: "Lainnya" },
+             { href: "https://bigfive-test.com/id/result/667fcf9db47c14dcd51f99ce", title: "Big Five Personality Test", description: "Tes kepribadian online berdasarkan model Big Five.", category: "Lainnya" },
+            { href: "https://www.tools-ai.online/", title: "Tools-AI Online Directory", description: "Direktori berbagai alat AI online.", category: "Lainnya" },
+             { href: "https://adspesialis.com/", title: "Adspesialis.com", description: "Agensi atau layanan yang berfokus pada periklanan digital.", category: "Lainnya" },
+             { href: "https://bisa.design/course/detail/NQ/1", title: "Bisa Design Academy Course", description: "Halaman kursus spesifik di platform Bisa Design Academy.", category: "Lainnya" },
+            { href: "https://butterflies.ai/me", title: "Butterflies AI", description: "Jejaring sosial pertama yang ditenagai oleh AI.", category: "Lainnya" },
+             { href: "https://id.indeed.com/?from=gnav-homepage", title: "Indeed Indonesia", description: "Portal pencarian kerja online.", category: "Lainnya" },
+             { href: "https://www.guru.com/pro/", title: "Guru.com Freelancer Dashboard", description: "Platform untuk mencari dan mempekerjakan freelancer.", category: "Lainnya" },
+             { href: "https://www.kitalulus.com/profile/settings", title: "Kitalulus Profile", description: "Platform pencarian kerja dan pengembangan karir.", category: "Lainnya" },
+             { href: "https://glints.com/id", title: "Glints Indonesia", description: "Platform karir dan rekrutmen di Asia Tenggara.", category: "Lainnya" },
+             { href: "https://www.flexjobs.com/search?...", title: "FlexJobs Search", description: "Portal lowongan kerja remote dan fleksibel.", category: "Lainnya" },
+             { href: "https://ammarfakhruddin.my.id/canaks/", title: "Canaks by Ammar Fakhruddin", description: "Halaman spesifik di situs pribadi, mungkin portofolio atau proyek.", category: "Lainnya" },
+             { href: "https://tokpee.co/?gad_source=1&gclid=...#pricing", title: "Tokpee", description: "Alat riset produk terlaris untuk marketplace Shopee & Tokopedia.", category: "Lainnya" },
+             { href: "https://produkdigital.net/tools/", title: "ProdukDigital.net Tools", description: "Kumpulan tools terkait produk digital.", category: "Lainnya" },
+             { href: "https://www.ipindo.com/", title: "IPINDO", description: "Jasa pendaftaran merek, paten, dan hak kekayaan intelektual lainnya.", category: "Lainnya" },
+             { href: "https://projects.co.id/public/browse_services/view/91cd11/jual-sop-jadi-dan-jasa-pembuatan-sop-perusa", title: "Projects.co.id SOP Service", description: "Layanan penjualan dan pembuatan SOP Perusahaan.", category: "Lainnya" },
+             { href: "https://premly.id/panel", title: "Premly Panel", description: "Solusi layanan digital, mungkin terkait akun premium atau API.", category: "Lainnya" },
+             { href: "https://www.fastmoss.com/id/dashboard", title: "FastMoss Dashboard", description: "Platform analitik data untuk TikTok.", category: "Lainnya" },
+             { href: "https://my.indihome.co.id/home", title: "My IndiHome", description: "Portal pelanggan layanan internet IndiHome.", category: "Lainnya" },
+             { href: "https://mastersop.com/", title: "Master SOP Indonesia", description: "Konsultan penyusunan SOP dan sistemasi bisnis.", category: "Lainnya" },
+             { href: "https://www.udemy.com/cart/subscribe/course/3191206/", title: "Udemy Course Subscription", description: "Halaman berlangganan kursus spesifik di Udemy.", category: "Lainnya" },
+             { href: "https://hypeauditor.com/...", title: "HypeAuditor", description: "Platform pemasaran influencer berbasis AI.", category: "Lainnya" }
+        ];
+
+        // --- Data Glosarium Lengkap ---
+        const glossary = [
+             { term: "AI (Artificial Intelligence)", definition: "Simulasi kecerdasan manusia dalam mesin yang diprogram untuk berpikir seperti manusia dan meniru tindakannya." },
+             { term: "LLM (Large Language Model)", definition: "Jenis AI yang dilatih pada data teks masif untuk memahami, menghasilkan, dan menerjemahkan bahasa manusia." },
+             { term: "Prompt Engineering", definition: "Seni membuat instruksi (prompt) yang efektif untuk mendapatkan hasil yang diinginkan dari AI generatif." },
+             { term: "Generative AI", definition: "AI yang mampu menciptakan konten baru (teks, gambar, audio, video) yang belum pernah ada sebelumnya." },
+             { term: "Diffusion Model", definition: "Teknik AI, terutama untuk gambar, yang menghasilkan data dengan secara bertahap menghilangkan noise dari sinyal acak." },
+             { term: "Multimodal AI", definition: "AI yang dapat memahami dan memproses informasi dari berbagai jenis data (misalnya, teks, gambar, audio) secara bersamaan." }, // FIX: Menghapus 'Ai:' yang salah
+             { term: "API (Application Programming Interface)", definition: "Sekumpulan aturan yang memungkinkan aplikasi perangkat lunak berbeda untuk berkomunikasi dan berbagi data." },
+             { term: "UI (User Interface)", definition: "Bagian visual dari aplikasi atau situs web yang memungkinkan pengguna berinteraksi dengannya." },
+             { term: "UX (User Experience)", definition: "Perasaan dan kemudahan keseluruhan yang dialami pengguna saat menggunakan produk atau layanan." },
+             { term: "No-Code Platform", definition: "Platform yang memungkinkan pengguna membuat aplikasi atau otomatisasi tanpa perlu menulis kode tradisional." },
+             { term: "SEO (Search Engine Optimization)", definition: "Praktik mengoptimalkan konten online agar peringkatnya lebih tinggi di hasil mesin pencari." },
+             { term: "Copywriting", definition: "Kegiatan menulis teks (copy) untuk tujuan periklanan atau bentuk pemasaran lainnya." },
+             { term: "Persona", definition: "Karakter semi-fiksi yang mewakili target audiens atau pengguna ideal suatu produk." },
+             { term: "Stable Diffusion", definition: "Model text-to-image deep learning sumber terbuka yang populer, dirilis pada tahun 2022." },
+             { term: "Text-to-Image", definition: "Jenis AI generatif yang membuat gambar berdasarkan deskripsi tekstual." },
+             { term: "Text-to-Video", definition: "Jenis AI generatif yang membuat video berdasarkan deskripsi tekstual." },
+             { term: "TTS (Text-to-Speech)", definition: "Teknologi yang mengubah teks digital menjadi ucapan audio yang disintesis." },
+             { term: "Cloud Computing", definition: "Penyediaan layanan komputasi—termasuk server, penyimpanan, basis data, jaringan, perangkat lunak—melalui Internet." },
+             { term: "Open Source", definition: "Perangkat lunak dengan kode sumber yang dapat diperiksa, dimodifikasi, dan ditingkatkan oleh siapa saja." },
+             { term: "Freemium", definition: "Model bisnis di mana layanan dasar disediakan gratis, tetapi fitur premium memerlukan pembayaran." }
+        ];
+
+
+        // --- DOM Elements ---
+        const grid = document.getElementById('bookmark-grid');
+        const categoryFilterEl = document.getElementById('category-filter');
+        const sortSelect = document.getElementById('sort-select');
+        const themeToggle = document.getElementById('theme-toggle');
+        const accordionToggles = document.querySelectorAll('.accordion-toggle');
+        const glossaryTableBody = document.getElementById('glossary-table')?.querySelector('tbody');
+        const loadingPlaceholder = document.getElementById('loading-placeholder');
+        
+        // --- Fungsi Render ---
+
+        function renderBookmarks() {
+            if (!grid) { console.error("Bookmark grid element not found."); return; }
+            
+            let bookmarksToRender = [...bookmarks]; // FIX: Menggunakan 'bookmarks'
+
+            // Filtering
+            if (currentFilter !== 'all') {
+                 bookmarksToRender = bookmarksToRender.filter(b => b.category === currentFilter); 
+            }
+
+            // Sorting
+            if (currentSort === 'asc') {
+                bookmarksToRender.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (currentSort === 'desc') {
+                bookmarksToRender.sort((a, b) => b.title.localeCompare(a.title));
+            }
+            
+            // Sembunyikan placeholder loading
+            if (loadingPlaceholder) loadingPlaceholder.style.display = 'none';
+
+            grid.innerHTML = ''; // Kosongkan grid
+            
+            if (bookmarksToRender.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-lg py-10" style="color: var(--color-text-alt);">Tidak ada tools yang cocok dengan filter "${currentFilter}".</p>`;
+                return;
+            }
+            
+            bookmarksToRender.forEach((bookmark, index) => {
+                const card = document.createElement('a');
+                card.href = bookmark.href;
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+                card.className = 'bookmark-card fade-in-up';
+                // Animasi staggered
+                card.style.animationDelay = `${(index % 3) * 0.05}s`; 
+
+                const domain = new URL(bookmark.href).hostname.replace('www.', ''); 
+                const faviconUrl = `https://logo.clearbit.com/${domain}`; 
+                const placeholder = `https://placehold.co/40x40/E2E8F0/4B5563?text=${domain[0]?.toUpperCase() || '?'}&font=Inter`;
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <img 
+                            src="${faviconUrl}" 
+                            alt="Logo ${bookmark.title}" 
+                            class="card-icon" 
+                            onerror="this.onerror=null; this.src='https://www.google.com/s2/favicons?domain=${domain}&sz=64'; this.onerror=null; this.src='${placeholder}';" 
+                        >
+                        <div class="card-title-section"> 
+                            <h4 class="card-title truncate">${bookmark.title}</h4>
+                            <span class="card-domain truncate">${domain}</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description line-clamp-3">
+                            ${bookmark.description || 'Deskripsi singkat untuk tool ini.'}
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-category-badge">
+                             ${bookmark.category}
+                        </span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderGlossary() {
+            if (!glossaryTableBody) { console.error("Glossary table body not found."); return; }
+            glossaryTableBody.innerHTML = '';
+            
+            const sortedGlossary = [...glossary].sort((a, b) => a.term.localeCompare(b.term)); // FIX: Menggunakan 'glossary'
+            
+            sortedGlossary.forEach((item, index) => { 
+                const row = document.createElement('tr');
+                row.className = 'fade-in-up';
+                row.style.animationDelay = `${index * 0.03}s`; 
+                
+                row.innerHTML = `
+                    <td class="term">${item.term}</td>
+                    <td class="definition">${item.definition}</td>
+                `;
+                glossaryTableBody.appendChild(row);
+            });
+        }
+
+        // --- Event Listeners ---
+
+        if (themeToggle) {
+            // Cek preferensi sistem
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (prefersDark) {
+                 document.body.classList.add('dark');
+                 themeToggle.checked = true;
+            } else {
+                 document.body.classList.remove('dark');
+                 themeToggle.checked = false;
+            }
+            
+            themeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark', themeToggle.checked);
+            });
+        } else { console.warn("Theme toggle not found."); }
+
+        // --- Event Listener BARU untuk Segmented Control ---
+        if (categoryFilterEl) {
+            categoryFilterEl.addEventListener('click', (e) => {
+                const clickedButton = e.target.closest('button[role="tab"]');
+                if (!clickedButton) return; // Klik di luar tombol
+
+                // Hentikan jika sudah aktif
+                if (clickedButton.classList.contains('active')) return;
+
+                currentFilter = clickedButton.dataset.value;
+
+                // Hapus aktif dari semua tombol
+                categoryFilterEl.querySelectorAll('button[role="tab"]').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Tambah aktif ke tombol yang diklik
+                clickedButton.classList.add('active');
+
+                // Reset sort dan render ulang
+                if (sortSelect) sortSelect.value = 'default';
+                currentSort = 'default';
+                renderBookmarks(); 
+            });
+        } else { console.warn("Category filter element not found."); }
+
+        if (sortSelect) {
+            sortSelect.addEventListener('change', (e) => {
+                currentSort = e.target.value;
+                 renderBookmarks(); 
+            });
+         } else { console.warn("Sort select not found."); }
+
+         // Event Listener Accordion (Logika sama, hanya menambahkan aria-expanded)
+         if (accordionToggles.length > 0) {
+            accordionToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('.accordion-icon');
+                    if (!content || !icon) return; 
+
+                    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+
+                    if (!isOpen) {
+                        // Tutup semua yang lain
+                        accordionToggles.forEach(otherToggle => {
+                           if (otherToggle !== toggle) {
+                               const otherContent = otherToggle.nextElementSibling;
+                               const otherIcon = otherToggle.querySelector('.accordion-icon');
+                               if (otherContent) otherContent.style.maxHeight = null;
+                               if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                               otherToggle.setAttribute('aria-expanded', 'false');
+                           }
+                        });
+                        // Buka yang ini
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.style.transform = 'rotate(180deg)';
+                        toggle.setAttribute('aria-expanded', 'true');
+                    } else {
+                        // Tutup yang ini
+                        content.style.maxHeight = null;
+                        icon.style.transform = 'rotate(0deg)';
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+         } else { console.warn("Accordion toggles not found."); }
+
+        // --- Inisialisasi ---
+        // Penundaan render untuk membiarkan animasi fade-in-up terlihat
+        setTimeout(() => {
+            renderBookmarks();
+            renderGlossary();
+        }, 100); // Penundaan singkat
+
+    </script>
+</body>
+</html>
+
